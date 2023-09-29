@@ -11,7 +11,7 @@ to TLS 1.3 traffic, and support for generating verifiable claims using applicabl
 
 ## Build and Run
 
-For the requirements and explanation of this code see the inside READMEs, specially, [this](https://github.com/brave-experiments/DiStefano/blob/main/src/README.md)).
+For the requirements and explanation of this code see the inside READMEs, specially, [this](https://github.com/brave-experiments/DiStefano/blob/main/src/README.md) one.
 
 ## Citation
 

@@ -1,6 +1,5 @@
 #include "../doctest.h"
 #include "EmpWrapperAG2PC.hpp"
-#include "SSLScope.hpp"
 #include "TLSSocket.hpp"
 #define SOCKET_SETUP
 #include "../mta/F2128MtA.hpp"
@@ -305,8 +304,6 @@ TEST_CASE("aes_gcm_derivation") {
   REQUIRE(context);
   std::unique_ptr<TLSSocket> client, server;
   REQUIRE(setup_sockets(context, server, client));
-  SSLScope<true> server_scope(server->get_ssl_object());
-  SSLScope<false> client_scope(client->get_ssl_object());
 
   std::unique_ptr<EmpWrapperAG2PC> client_circ;
   std::unique_ptr<EmpWrapperAG2PC> server_circ;
@@ -450,8 +447,6 @@ TEST_CASE_TEMPLATE(
   REQUIRE(context);
   std::unique_ptr<TLSSocket> client, server;
   REQUIRE(setup_sockets(context, server, client));
-  SSLScope<true> server_scope(server->get_ssl_object());
-  SSLScope<false> client_scope(client->get_ssl_object());
 
   std::unique_ptr<EmpWrapperAG2PC> client_circ;
   std::unique_ptr<EmpWrapperAG2PC> server_circ;
@@ -693,8 +688,6 @@ TEST_CASE("derive_combined_traffic") {
   REQUIRE(context);
   std::unique_ptr<TLSSocket> client, server;
   REQUIRE(setup_sockets(context, server, client));
-  SSLScope<true> server_scope(server->get_ssl_object());
-  SSLScope<false> client_scope(client->get_ssl_object());
 
   std::unique_ptr<EmpWrapperAG2PC> client_circ;
   std::unique_ptr<EmpWrapperAG2PC> server_circ;

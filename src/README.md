@@ -5,6 +5,7 @@ This directory contains all of the code for this project.
 - [cmake 3.5](https://cmake.org/)(required for BoringSSL).
 - A recent version of [Perl](https://www.perl.org/) (required for BoringSSL).
 - A recent version of [Go](https://go.dev/) (required for BoringSSL).
+- OpenSSL
 - (Optional) [Doxygen](https://doxygen.nl/) for generating documentation.
 - (Optional) A copy of [Google Benchmark](https://github.com/google/benchmark). You can obtain this
   by simply running ```git clone https://github.com/google/benchmark.git``` in this directory. Note

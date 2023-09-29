@@ -1,7 +1,8 @@
 #ifndef INCLUDED_SSLBUFFER_HPP
 #define INCLUDED_SSLBUFFER_HPP
 
-#include "ThreadSafeSSL.hpp"
+#include "openssl/base.h"
+#include "ssl/internal.h"
 #include <cassert>
 #include <iostream>
 #include <vector>
@@ -27,10 +28,9 @@ template <size_t flush_size = SSL3_RT_MAX_PLAIN_LENGTH, bool hold_flush = true>
 class SSLBufferPolicy {
 public:
   /**
-     SizeType. We use the same SizeType type as ThreadSafeSSL for compatibility
-     purposes.
+     SizeType. We forward declare a size type for compatibility's sake.
   **/
-  using SizeType = ThreadSafeSSL::SizeType;
+  using SizeType = unsigned;
 
   /**
      has_data. This function always returns true. It should be used to indicate

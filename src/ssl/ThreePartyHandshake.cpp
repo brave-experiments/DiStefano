@@ -796,9 +796,10 @@ static bool run_traffic_circuit_internal(
     std::copy(output.cbegin() + offset,
               output.cbegin() + offset + out.client_iv.size(),
               out.client_iv.begin());
-    offset += out.client_iv.size() + out.server_key_share.size();
+    // These are also fine to cast.
+    offset += unsigned(out.client_iv.size() + out.server_key_share.size());
     std::copy(output.cbegin() + offset, output.cend(), out.server_iv.begin());
-    offset += out.server_iv.size();
+    offset += unsigned(out.server_iv.size());
   } else {
     const auto copy_func = [&](auto &dest,
                                const unsigned inc = sizeof(decltype(dest))) {

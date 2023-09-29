@@ -76,11 +76,8 @@ set(WARNINGS
     -Wnon-virtual-dtor
     -Wunused
     # These are omitted just so that we can continue piecewise developing.
-    -Wno-error=unused-parameter
-    -Wno-error=zero-as-null-pointer-constant
-    -Wno-error=unused-variable
+    -Wno-error=unused-parameter    
     -Wno-error=return-type
-    -Wno-error=unused-function
     -Woverloaded-virtual
     -Wsign-conversion
     -Wconversion
@@ -92,8 +89,7 @@ set(WARNINGS
     -Wformat=2
     -Wcast-qual
     -Wmissing-declarations
-    -Wsign-promo
-    -Wno-error=disabled-optimization)
+    -Wsign-promo)
 
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -187,9 +183,6 @@ set(SRC_FILES
   ssl/Messaging.cpp
   ssl/EmpWrapper.cpp
   ssl/EmpWrapperAG2PC.cpp
-  ssl/EmpSSLSocketManager.cpp
-  ssl/ThreadSafeSSL.cpp
-  ssl/EmpThreadSocket.cpp
   ssl/SSLBuffer.cpp
   ssl/CounterType.cpp
   ssl/NoBuffer.cpp
@@ -223,7 +216,7 @@ target_link_libraries(TLSAttestDebugAsan PRIVATE ${L_ASAN_FLAGS})
 target_compile_options(TLSAttestOpt PRIVATE ${C_OPT_FLAGS})
 target_link_libraries(TLSAttestOpt PRIVATE ${L_FLAGS})
 
-set(SSLTARGETS Util EmpWrapper EmpWrapperAG2PC ThreePartyHandshake StatefulSocket TLSSocket Messaging SSL ThreadSafeSSL EmpSSLSocketManager EmpThreadSocket SSLBuffer NoBuffer CounterType)
+set(SSLTARGETS Util EmpWrapper EmpWrapperAG2PC ThreePartyHandshake StatefulSocket TLSSocket Messaging SSL SSLBuffer NoBuffer CounterType)
 set(NodeTARGETS Server KeyShare)
 set(MTATARGETS MtA F2128MtA EmpBlockOwningSpan EmpBlockNonOwningSpan EmpBlockArray ectf PackArray)
 set(2PCTARGETS CircuitSynthesis)

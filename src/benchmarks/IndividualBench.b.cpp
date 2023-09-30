@@ -130,8 +130,8 @@ static void execute_bench_ot(CircuitType &circ, T &io, const int mode,
     // and the units of all data output into the file are in bytes.
     std::ofstream file(std::string(circ.text_output) + "_" + ot_type + "_" +
                        std::to_string(iterations) + ".csv");
-    file << "setup_time, indep_time, dep_time, online_time, setup_bytes, "
-            "indep_bytes, dep_bytes, online_bytes"
+    file << "setup_time,indep_time,dep_time,online_time,setup_bytes,"
+            "indep_bytes,dep_bytes,online_bytes"
          << '\n';
 
     auto setup_avg = timings[0].setup;
@@ -155,18 +155,46 @@ static void execute_bench_ot(CircuitType &circ, T &io, const int mode,
       dep_bytes_avg += timings[i].dep_bytes;
       run_bytes_avg += timings[i].run_bytes;
 
-      file << timings[i].setup.count() << ","
-           << timings[i].indep_preproc.count() << ","
-           << timings[i].dep_preproc.count() << "," << timings[i].exec.count()
+      file << std::chrono::duration_cast<std::chrono::milliseconds>(
+                  timings[i].setup)
+                  .count()
+           << ","
+           << std::chrono::duration_cast<std::chrono::milliseconds>(
+                  timings[i].indep_preproc)
+                  .count()
+           << ","
+           << std::chrono::duration_cast<std::chrono::milliseconds>(
+                  timings[i].dep_preproc)
+                  .count()
+           << ","
+           << std::chrono::duration_cast<std::chrono::milliseconds>(
+                  timings[i].exec)
+                  .count()
            << "," << timings[i].setup_bytes << "," << timings[i].indep_bytes
            << "," << timings[i].dep_bytes << "," << timings[i].run_bytes
            << '\n';
     }
 
-    std::cout << "setup_avg (ms):" << setup_avg.count() / iterations << '\n';
-    std::cout << "indep_avg (ms):" << indep_avg.count() / iterations << '\n';
-    std::cout << "dep_avg (ms):" << dep_avg.count() / iterations << '\n';
-    std::cout << "onl_avg (ms):" << onl_avg.count() / iterations << '\n';
+    std::cout << "setup_avg (ms):"
+              << std::chrono::duration_cast<std::chrono::milliseconds>(
+                     setup_avg / iterations)
+                     .count()
+              << '\n';
+    std::cout << "indep_avg (ms):"
+              << std::chrono::duration_cast<std::chrono::milliseconds>(
+                     indep_avg / iterations)
+                     .count()
+              << '\n';
+    std::cout << "dep_avg (ms):"
+              << std::chrono::duration_cast<std::chrono::milliseconds>(
+                     dep_avg / iterations)
+                     .count()
+              << '\n';
+    std::cout << "onl_avg (ms):"
+              << std::chrono::duration_cast<std::chrono::milliseconds>(
+                     onl_avg / iterations)
+                     .count()
+              << '\n';
     std::cout << "setup_bytes_avg (mb): "
               << static_cast<double>(setup_bytes_avg) /
                      (iterations * (1024. * 1024.))
@@ -365,7 +393,7 @@ static void execute_mta_bench(T &io, const bool is_server,
     if (is_server) {
       file = new std::ofstream(output_filepath + "_" +
                                std::to_string(iterations) + ".csv");
-      (*file) << "time, data_exchanged" << '\n';
+      (*file) << "time,bytes_exchanged" << '\n';
     }
 
     for (unsigned i = 0; i < iterations; i++) {
@@ -381,7 +409,9 @@ static void execute_mta_bench(T &io, const bool is_server,
         MtA::play_sender(out, ot, in, prime, bn_ctx.get());
         auto time = std::chrono::steady_clock::now() - start;
         timing += time;
-        (*file) << time.count() << ","
+        (*file) << std::chrono::duration_cast<std::chrono::milliseconds>(time)
+                       .count()
+                << ","
                 << (io.get_read_counter() + io.get_write_counter()) -
                        (old_read + old_write)
                 << "\n";
@@ -391,7 +421,10 @@ static void execute_mta_bench(T &io, const bool is_server,
     }
 
     if (is_server) {
-      std::cout << kind << " avg timing(ms):" << timing.count() / iterations
+      std::cout << kind << " avg timing(ms):"
+                << std::chrono::duration_cast<std::chrono::milliseconds>(
+                       timing / iterations)
+                       .count()
                 << '\n'
                 << "Bandwidth avg (mb):"
                 << static_cast<double>(io.get_read_counter() +
@@ -424,7 +457,7 @@ static void execute_mta128_bench(T &io, SSL *under_io, const bool is_server,
 
   if (is_server) {
     std::ofstream file("mta128_" + std::to_string(iterations) + ".csv");
-    file << "time, data_exchanged" << '\n';
+    file << "time,bytes_exchanged" << '\n';
     for (unsigned i = 0; i < iterations; i++) {
       uint64_t tb{}, tbo{};
       auto start = std::chrono::steady_clock::now();
@@ -433,7 +466,9 @@ static void execute_mta128_bench(T &io, SSL *under_io, const bool is_server,
       timing += time;
 
       io.recv_data(&tbo, sizeof(tbo));
-      file << time.count() << "," << tbo + tb << "\n";
+      file
+          << std::chrono::duration_cast<std::chrono::milliseconds>(time).count()
+          << "," << tbo + tb << "\n";
       bandwidth += tbo + tb;
     }
     file.close();
@@ -448,7 +483,10 @@ static void execute_mta128_bench(T &io, SSL *under_io, const bool is_server,
 
   if (is_server) {
     std::cout << "F2128 MtA Batched timings (ms):"
-              << timing.count() / iterations << '\n'
+              << std::chrono::duration_cast<std::chrono::milliseconds>(
+                     timing / iterations)
+                     .count()
+              << '\n'
               << "Bandwidth avg (mb):"
               << static_cast<double>(bandwidth + io.get_read_counter() +
                                      io.get_write_counter()) /
@@ -506,7 +544,7 @@ static void execute_ectf_bench(T &io, SSL *under_io, const bool is_server,
     if (is_server) {
       file = new std::ofstream(output_filepath + "_" +
                                std::to_string(iterations) + ".csv");
-      (*file) << "time, bytes exchanged" << '\n';
+      (*file) << "time,bytes_exchanged" << '\n';
     }
 
     bssl::Array<uint8_t> out;
@@ -518,7 +556,9 @@ static void execute_ectf_bench(T &io, SSL *under_io, const bool is_server,
       if (is_server) {
         uint64_t tmp;
         io.recv_data(&tmp, sizeof(tmp));
-        (*file) << time.count() << "," << tmp + tb << "\n";
+        (*file) << std::chrono::duration_cast<std::chrono::milliseconds>(time)
+                       .count()
+                << "," << tmp + tb << "\n";
         bandwidth += tmp + tb;
         timing += time;
       } else {
@@ -528,7 +568,10 @@ static void execute_ectf_bench(T &io, SSL *under_io, const bool is_server,
     }
 
     if (is_server) {
-      std::cout << kind << " avg timing(ms):" << timing.count() / iterations
+      std::cout << kind << " avg timing(ms):"
+                << std::chrono::duration_cast<std::chrono::milliseconds>(
+                       timing / iterations)
+                       .count()
                 << '\n'
                 << "Bandwidth avg (mb):"
                 << static_cast<double>(bandwidth) /

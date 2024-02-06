@@ -28,7 +28,7 @@ public:
   void print() const noexcept {
     for (unsigned i = 0; i < static_cast<unsigned>(Events::State::SIZE); i++) {
       std::cerr << Events::as_string[i] << ":"
-                << static_cast<double>(data[i]) / (1024. * 1024.) << " MB\n";
+                << static_cast<double>(data[i]) / (1024. * 1024.) << " MiB\n";
     }
     std::cerr << "\n";
   }

@@ -1,5 +1,5 @@
 # WARNING
-This is a modified verison of Emp-tool that was cloned on August 1st 2022. This library was modified to use SHA256 instead of SHA3 for circuit computations to make it easier to use with BoringSSL. 
+This is a modified version of Emp-tool that was cloned on August 1st 2022. This library was modified to use SHA256 instead of SHA3 for circuit computations to make it easier to use with BoringSSL. 
 
 # emp-tool
 ![arm](https://github.com/emp-toolkit/emp-tool/workflows/arm/badge.svg)

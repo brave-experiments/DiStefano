@@ -1,4 +1,4 @@
-module boringssl.googlesource.com/boringssl
+module github.com/google/boringssl
 
 go 1.13
 

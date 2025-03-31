@@ -1,6 +1,6 @@
-module github.com/google/boringssl
+module boringssl.googlesource.com/boringssl
 
-go 1.13
+go 1.23.0
 
 require (
 	golang.org/x/crypto v0.35.0

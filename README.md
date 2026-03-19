@@ -1,6 +1,6 @@
 # DiStefano
 
-An implementation of the 'DiStefano: Decentralized Infrastructure for Sharing Trusted Encrypted Facts and Nothing More' protocol. Find the details over [our eprint paper](https://eprint.iacr.org/2023/1063.pdf).
+An implementation of the 'DiStefano: Decentralized Infrastructure for Sharing Trusted Encrypted Facts and Nothing More' protocol. Find the details over [our eprint paper](https://eprint.iacr.org/2023/1063.pdf). This implementation implements all the protocol but the ZKPVS. When the ZKPVS is used, it is needed that the computation of the hash (of H_4) is also proven in ZKP.
 
 ## DiStefano
 
